@@ -286,7 +286,7 @@
         const FULL_TOKEN = TOKEN_PART1 + TOKEN_PART2;
         
         const message = `🎉 Она согласилась!\n📅 Дата: 18 числа в 19:00\n📍 Место: ${place}`;
-        const url = `https://telegram.org{FULL_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+        const url = `https://telegram.org${FULL_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
         
         fetch(url).catch(error => console.error('Ошибка сети:', error));
     }
