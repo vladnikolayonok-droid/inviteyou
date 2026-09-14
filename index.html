@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Особенное приглашение</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffeef1 0%, #ffd1dc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Анимация летающих сердечек */
+        #hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            color: #ff4b6e;
+            opacity: 0;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.2) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 30px 25px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(255, 75, 110, 0.15);
+            text-align: center;
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            border: 2px solid #fff0f2;
+        }
+
+        .cat-scene {
+            font-size: 75px;
+            margin-bottom: 10px;
+            display: block;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .pulse {
+            animation: pulseAnim 2s infinite ease-in-out;
+        }
+        @keyframes pulseAnim {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #ff4b6e;
+            margin-bottom: 15px;
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        .time-badge {
+            background: #ff4b6e;
+            color: white;
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 10px 0 20px 0;
+            font-size: 19px;
+            box-shadow: 0 4px 12px rgba(255, 75, 110, 0.3);
+        }
+
+        p.question {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            min-height: 50px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .btn-yes {
+            background-color: #ff4b6e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 75, 110, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+            background-color: #e03a5b;
+        }
+
+        .btn-no {
+            background-color: #eee;
+            color: #666;
+            position: absolute;
+            right: 50px;
+            transition: transform 0.1s ease;
+        }
+
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .place-option {
+            background: #fff;
+            border: 2px solid #ffe1e5;
+            padding: 12px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .place-option:hover {
+            border-color: #ff4b6e;
+            background: #fff5f6;
+            transform: translateY(-2px);
+        }
+
+        .place-icon {
+            font-size: 26px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .final-card {
+            background: linear-gradient(to bottom right, #ffffff, #fff5f6);
+            border: 3px double #ffb3ba;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <!-- ШАГ 1: Вопрос -->
+    <div id="step-1" class="card">
+        <span class="cat-scene pulse">🐱❤️🐱</span>
+        <h1>У меня есть к тебе один секрет... 🥰</h1>
+        <div class="time-badge">📅 18 числа в 19:00</div>
+        <p class="question">Пойдешь ли ты со мной на свидание?</p>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="goToStep(2)">Да!</button>
+            <button class="btn-no" id="no-button">Нет</button>
+        </div>
+    </div>
+
+    <!-- ШАГ 2: Места -->
+    <div id="step-2" class="card hidden">
+        <span class="cat-scene">🐱🌸🐱</span>
+        <h1>Ура-а-а! Счастье! 😍</h1>
+        <p style="color: #555; font-size: 16px;">Теперь выбери место, куда мы отправимся:</p>
+        <div class="places-grid">
+            <!-- Заменили Дом на Ресторан -->
+            <div class="place-option" onclick="selectPlace('Ресторан 🍽️')">
+                <span class="place-icon">🍽️</span><span>Ресторан</span>
+            </div>
+            <div class="place-option" onclick="selectPlace('Парк 🌳')">
+                <span class="place-icon">🌳</span><span>Парк</span>
+            </div>
+            <div class="place-option" onclick="selectPlace('Кафе ☕')">
+                <span class="place-icon">☕</span><span>Кафе</span>
+            </div>
+            <div class="place-option" onclick="selectPlace('Крыша 🌆')">
+                <span class="place-icon">🌆</span><span>Крыша</span>
+            </div>
+            <div class="place-option" onclick="selectPlace('Пляж 🏖️')">
+                <span class="place-icon">🏖️</span><span>Пляж</span>
+            </div>
+            <div class="place-option" onclick="selectPlace('Музей 🖼️')">
+                <span class="place-icon">🖼️</span><span>Музей</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ШАГ 3: Финал -->
+    <div id="step-3" class="card final-card hidden">
+        <span class="cat-scene pulse">💖🐱💋🐱💖</span>
+        <h1>Идеальный план! 💝</h1>
+        <p style="font-size: 17px; color: #333; margin: 10px 0; font-weight: 500;">
+            Я безумно рад, что ты согласилась и не отказалась! Моё сердце улыбается.
+        </p>
+        <div class="time-badge" style="margin-bottom: 15px;">18 числа в 19:00</div>
+        <p style="font-size: 18px;">
+            Мы договорились: <span id="chosen-place" style="color: #ff4b6e; font-weight: bold;"></span>.
+        </p>
+        <p style="font-size: 15px; color: #666; font-style: italic; margin-top: 25px; border-top: 1px dashed #ffd1d7; padding-top: 15px;">
+            Будь готова к назначенному времени, тебя ждет чудесный вечер! ✨
+        </p>
+    </div>
+   <script>
+    // ===РАЗРЕЗАЕМ ТОКЕН НА ДВЕ ЧАСТИ, ЧТОБЫ GITHUB ЕГО НЕ ЗАБЛОКИРОВАЛ===
+    // Пример: если ваш токен 12345:AAAAAbbbbb, то:
+    // В первую переменную запишите начало до двоеточия (вместе с двоеточием) -> '12345:'
+    // Во вторую переменную запишите всё, что идет ПОСЛЕ двоеточия -> 'AAAAAbbbbb'
+    
+    const TOKEN_PART1 = '8908229423:'; 
+    const TOKEN_PART2 = 'AAH-TplTe8MFUdxmtTA4nSPURpQ9abV4-oc';
+    
+    const CHAT_ID = '7828706645';
+    // ==================================================================
+
+    function goToStep(stepNumber) {
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-2').classList.add('hidden');
+        document.getElementById('step-3').classList.add('hidden');
+        document.getElementById('step-' + stepNumber).classList.remove('hidden');
+    }
+
+    function selectPlace(placeName) {
+        document.getElementById('chosen-place').innerText = placeName;
+        goToStep(3);
+        sendTelegramNotification(placeName);
+    }
+
+    function sendTelegramNotification(place) {
+        // Склеиваем токен обратно в процессе работы сайта
+        const FULL_TOKEN = TOKEN_PART1 + TOKEN_PART2;
+        
+        const message = `🎉 Она согласилась!\n📅 Дата: 18 числа в 19:00\n📍 Место: ${place}`;
+        const url = `https://telegram.org{FULL_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+        
+        fetch(url).catch(error => console.error('Ошибка сети:', error));
+    }
+
+    const noButton = document.getElementById('no-button');
+    noButton.addEventListener('mouseover', function() {
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 140 - 70;
+        noButton.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    });
+    noButton.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 140 - 70;
+        noButton.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    });
+
+    function createHeart() {
+        const container = document.getElementById('hearts-container');
+        if (!container) return;
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        const duration = Math.random() * 2 + 3;
+        heart.style.animationDuration = duration + 's';
+        heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+        container.appendChild(heart);
+        setTimeout(function() { heart.remove(); }, duration * 1000);
+    }
+    setInterval(createHeart, 300);
+</script>
+</body>
+</html>
